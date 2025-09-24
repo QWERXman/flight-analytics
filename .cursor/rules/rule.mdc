@@ -1,0 +1,7 @@
+---
+description:
+globs:
+alwaysApply: true
+---
+
+Используй nextjs, feature-sliced-design, redux-toolkit, redux-saga, material-ui
