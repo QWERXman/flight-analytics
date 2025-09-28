@@ -11,6 +11,7 @@ export type RegionsState = {
     error: string | null
     selectedCode: string | null
     hoveredCode: string | null
+    zoom: number
 }
 
 

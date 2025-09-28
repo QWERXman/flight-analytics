@@ -6,10 +6,11 @@ import {
     selectedRegionTitleSelector,
     hoveredRegionTitleSelector,
     selectedRegionSelector,
+    zoomSelector,
 } from '@/client/entities/regions/slice'
 import { useAppDispatch, useAppSelector } from '@/lib/hooks'
 import { selectRegion, hoverRegion } from '@/client/entities/regions/slice'
-import { RegionDetailsSidebar } from '@/client/widgets'
+import { RegionDetailsSidebar, ZoomControls } from '@/client/widgets'
 
 export default () => {
     useRegions()
@@ -18,6 +19,7 @@ export default () => {
     const selectedTitle = useAppSelector(selectedRegionTitleSelector)
     const hoveredTitle = useAppSelector(hoveredRegionTitleSelector)
     const selectedRegion = useAppSelector(selectedRegionSelector)
+    const zoom = useAppSelector(zoomSelector)
     const dispatch = useAppDispatch()
 
     const handleClick = useCallback(
@@ -36,41 +38,52 @@ export default () => {
     }, [dispatch])
 
     return (
-        <>
+        <div className="rf-map-container">
             {(selectedTitle || hoveredTitle) && (
                 <div className="rf-map__title">
                     {hoveredTitle ?? selectedTitle}
                 </div>
             )}
-            <svg
-                xmlns="http://www.w3.org/2000/svg"
-                version="1.2"
-                baseProfile="tiny"
-                x="0px"
-                y="0px"
-                viewBox="0 0 1000 600"
-                className="rf-map"
-                onClick={handleClick}
-            >
-                {regions?.map((item) => (
-                    <path
-                        key={item.code}
-                        d={item.path}
-                        data-title={item.title}
-                        data-code={item.code}
-                        className={
-                            selectedRegion?.code === item.code ? 'selected' : ''
-                        }
-                        onMouseEnter={() => dispatch(hoverRegion(item.code))}
-                        onMouseLeave={() => dispatch(hoverRegion(null))}
-                    />
-                ))}
-            </svg>
+            <ZoomControls />
+            <div className="rf-map">
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    version="1.2"
+                    baseProfile="tiny"
+                    x="0px"
+                    y="0px"
+                    viewBox="0 0 1000 600"
+                    className="rf-map__svg"
+                    onClick={handleClick}
+                    style={{
+                        transform: `scale(${zoom})`,
+                        transformOrigin: 'center center',
+                    }}
+                >
+                    {regions?.map((item) => (
+                        <path
+                            key={item.code}
+                            d={item.path}
+                            data-title={item.title}
+                            data-code={item.code}
+                            className={
+                                selectedRegion?.code === item.code
+                                    ? 'selected'
+                                    : ''
+                            }
+                            onMouseEnter={() =>
+                                dispatch(hoverRegion(item.code))
+                            }
+                            onMouseLeave={() => dispatch(hoverRegion(null))}
+                        />
+                    ))}
+                </svg>
+            </div>
             <RegionDetailsSidebar
                 open={!!selectedRegion}
                 onClose={handleCloseSidebar}
                 region={selectedRegion}
             />
-        </>
+        </div>
     )
 }

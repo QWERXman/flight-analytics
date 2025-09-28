@@ -8,6 +8,7 @@ const initialState: RegionsState = {
     error: null,
     selectedCode: null,
     hoveredCode: null,
+    zoom: 1,
 }
 
 const regionsSlice = createSlice({
@@ -32,6 +33,15 @@ const regionsSlice = createSlice({
         hoverRegion(state, action: PayloadAction<string | null>) {
             state.hoveredCode = action.payload
         },
+        zoomIn(state) {
+            state.zoom = Math.min(state.zoom * 1.2, 3)
+        },
+        zoomOut(state) {
+            state.zoom = Math.max(state.zoom / 1.2, 0.5)
+        },
+        resetZoom(state) {
+            state.zoom = 1
+        },
     },
 })
 
@@ -41,6 +51,9 @@ export const {
     fetchRegionsFailed,
     selectRegion,
     hoverRegion,
+    zoomIn,
+    zoomOut,
+    resetZoom,
 } = regionsSlice.actions
 
 export const regionsSelector = (state: RootState) => state.regions.items
@@ -64,6 +77,7 @@ export const selectedRegionSelector = (state: RootState) => {
     const found = state.regions.items.find((r) => r.code === code)
     return found ?? null
 }
+export const zoomSelector = (state: RootState) => state.regions.zoom
 
 export default regionsSlice.reducer
 

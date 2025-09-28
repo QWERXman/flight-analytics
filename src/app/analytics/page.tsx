@@ -5,7 +5,7 @@ import NavigationTabs from '@/client/widgets/tabs'
 import RegionsMap from '@/client/pages/regions-map'
 import Analytics from '@/client/pages/analytics'
 
-export default function Home() {
+export default function AnalyticsPage() {
     const pathname = usePathname()
 
     const renderContent = () => {

@@ -1,0 +1,108 @@
+.zoom-controls {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    z-index: 20;
+    background: rgba(255, 255, 255, 0.95);
+    padding: 12px;
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.zoom-controls__button {
+    width: 40px;
+    height: 40px;
+    border: none;
+    border-radius: 8px;
+    background: #337AB7;
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    user-select: none;
+}
+
+.zoom-controls__button:hover:not(:disabled) {
+    background: #0180ef;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(51, 122, 183, 0.3);
+}
+
+.zoom-controls__button:active:not(:disabled) {
+    transform: translateY(0);
+    box-shadow: 0 2px 6px rgba(51, 122, 183, 0.3);
+}
+
+.zoom-controls__button:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+.zoom-controls__button--plus {
+    font-size: 24px;
+    line-height: 1;
+}
+
+.zoom-controls__button--minus {
+    font-size: 28px;
+    line-height: 1;
+}
+
+.zoom-controls__button--reset {
+    font-size: 18px;
+    line-height: 1;
+}
+
+.zoom-controls__indicator {
+    text-align: center;
+    font-size: 12px;
+    font-weight: 500;
+    color: #666;
+    margin-top: 4px;
+    padding: 4px 8px;
+    background: rgba(0, 0, 0, 0.05);
+    border-radius: 6px;
+    min-width: 40px;
+}
+
+@media (max-width: 768px) {
+    .zoom-controls {
+        top: 10px;
+        right: 10px;
+        padding: 8px;
+        gap: 6px;
+    }
+    
+    .zoom-controls__button {
+        width: 36px;
+        height: 36px;
+        font-size: 18px;
+    }
+    
+    .zoom-controls__button--plus {
+        font-size: 20px;
+    }
+    
+    .zoom-controls__button--minus {
+        font-size: 24px;
+    }
+    
+    .zoom-controls__button--reset {
+        font-size: 16px;
+    }
+    
+    .zoom-controls__indicator {
+        font-size: 11px;
+        min-width: 36px;
+    }
+}

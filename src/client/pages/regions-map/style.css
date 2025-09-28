@@ -1,12 +1,21 @@
+.rf-map-container {
+    position: relative;
+    max-width: 980px;
+    margin: auto;
+    padding: 20px;
+}
+
 .rf-map,
 .rf-map *{
     box-sizing: border-box;
 }    
 .rf-map {
     position: relative;
-    max-width: 980px;
-    margin: auto;
-    padding: 20px;
+    width: 100%;
+    height: 600px;
+    overflow: hidden;
+    border-radius: 12px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
 }
 .rf-map .district b {
     position: absolute;
@@ -44,10 +53,11 @@
 .rf-map.open .district span {
     color: #FFF;
 }
-.rf-map svg {
+.rf-map__svg {
     width: 100%;
     height: 100%;
-    filter: drop-shadow(0 5px 12px rgba(0, 0, 0, 0.5));    
+    filter: drop-shadow(0 5px 12px rgba(0, 0, 0, 0.5));
+    transition: transform 0.3s ease;
 }
 .rf-map path {
     stroke: #FFFFFF;
@@ -69,8 +79,8 @@
 }
 .rf-map__title {
     position: absolute;
-    top: 20px;
-    left: 20px;
+    top: 40px;
+    left: 40px;
     background: rgba(255, 255, 255, 0.95);
     padding: 8px 16px;
     border-radius: 8px;
