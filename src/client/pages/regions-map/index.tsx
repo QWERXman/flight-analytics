@@ -5,9 +5,11 @@ import {
     regionsSelector,
     selectedRegionTitleSelector,
     hoveredRegionTitleSelector,
+    selectedRegionSelector,
 } from '@/client/entities/regions/slice'
 import { useAppDispatch, useAppSelector } from '@/lib/hooks'
 import { selectRegion, hoverRegion } from '@/client/entities/regions/slice'
+import { RegionDetailsSidebar } from '@/client/widgets'
 
 export default () => {
     useRegions()
@@ -15,6 +17,7 @@ export default () => {
     const regions = useAppSelector(regionsSelector)
     const selectedTitle = useAppSelector(selectedRegionTitleSelector)
     const hoveredTitle = useAppSelector(hoveredRegionTitleSelector)
+    const selectedRegion = useAppSelector(selectedRegionSelector)
     const dispatch = useAppDispatch()
 
     const handleClick = useCallback(
@@ -27,6 +30,10 @@ export default () => {
         },
         [dispatch]
     )
+
+    const handleCloseSidebar = useCallback(() => {
+        dispatch(selectRegion(null))
+    }, [dispatch])
 
     return (
         <>
@@ -51,11 +58,19 @@ export default () => {
                         d={item.path}
                         data-title={item.title}
                         data-code={item.code}
+                        className={
+                            selectedRegion?.code === item.code ? 'selected' : ''
+                        }
                         onMouseEnter={() => dispatch(hoverRegion(item.code))}
                         onMouseLeave={() => dispatch(hoverRegion(null))}
                     />
                 ))}
             </svg>
+            <RegionDetailsSidebar
+                open={!!selectedRegion}
+                onClose={handleCloseSidebar}
+                region={selectedRegion}
+            />
         </>
     )
 }

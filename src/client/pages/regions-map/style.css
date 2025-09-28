@@ -53,6 +53,7 @@
     stroke: #FFFFFF;
     stroke-width: 1;
     stroke-linejoin: round; 
+    cursor: pointer;
 }
 .rf-map [data-code] {
     fill: #337AB7;
@@ -60,6 +61,26 @@
 }
 .rf-map [data-code]:hover {
     fill: #0180ef;
+}
+.rf-map [data-code].selected {
+    fill: #ff6b35 !important;
+    stroke: #ff6b35;
+    stroke-width: 2;
+}
+.rf-map__title {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    background: rgba(255, 255, 255, 0.95);
+    padding: 8px 16px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    font-family: 'Roboto', sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    color: #333;
+    z-index: 10;
+    backdrop-filter: blur(4px);
 }
 .rf-map .district-text {
     display: none;
@@ -149,24 +170,4 @@
         display: none;
     }
 }
-/* Цвета регионов */
-.rf-map [data-code="RU-SAR"] {
-    fill: #116f21;
-    cursor: pointer;
-}
-.rf-map [data-code="RU-SA"] {
-    fill: #d17520;
-    cursor: pointer;
-}
-.rf-map [data-code="RU-KO"] {
-    fill: #901aad;
-}
-.rf-map [data-code="RU-SAR"]:hover {
-    fill: #1bad33;
-}
-.rf-map [data-code="RU-SA"]:hover {
-    fill: #e3954b;
-}
-.rf-map [data-code="RU-KO"]:hover {
-    fill: #bf37e1;
-}
+

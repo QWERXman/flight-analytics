@@ -58,6 +58,12 @@ export const hoveredRegionTitleSelector = (state: RootState) => {
     const found = state.regions.items.find((r) => r.code === code)
     return found?.title ?? null
 }
+export const selectedRegionSelector = (state: RootState) => {
+    const code = state.regions.selectedCode
+    if (!code) return null
+    const found = state.regions.items.find((r) => r.code === code)
+    return found ?? null
+}
 
 export default regionsSlice.reducer
 
