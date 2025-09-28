@@ -4,13 +4,16 @@ import {
     zoomIn,
     zoomOut,
     resetZoom,
+    resetPan,
     zoomSelector,
+    panSelector,
 } from '@/client/entities/regions/slice'
 import './style.css'
 
 export const ZoomControls: React.FC = () => {
     const dispatch = useAppDispatch()
     const zoom = useAppSelector(zoomSelector)
+    const pan = useAppSelector(panSelector)
 
     const handleZoomIn = () => {
         dispatch(zoomIn())
@@ -22,6 +25,10 @@ export const ZoomControls: React.FC = () => {
 
     const handleResetZoom = () => {
         dispatch(resetZoom())
+    }
+
+    const handleResetPosition = () => {
+        dispatch(resetPan())
     }
 
     return (
@@ -49,6 +56,14 @@ export const ZoomControls: React.FC = () => {
                 disabled={zoom === 1}
             >
                 ⌂
+            </button>
+            <button
+                className="zoom-controls__button zoom-controls__button--position"
+                onClick={handleResetPosition}
+                title="Сбросить позицию"
+                disabled={pan.x === 0 && pan.y === 0}
+            >
+                ⊞
             </button>
             <div className="zoom-controls__indicator">
                 {Math.round(zoom * 100)}%

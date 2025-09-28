@@ -58,6 +58,12 @@
     height: 100%;
     filter: drop-shadow(0 5px 12px rgba(0, 0, 0, 0.5));
     transition: transform 0.3s ease;
+    cursor: grab;
+}
+
+.rf-map__svg--dragging {
+    cursor: grabbing;
+    transition: none;
 }
 .rf-map path {
     stroke: #FFFFFF;

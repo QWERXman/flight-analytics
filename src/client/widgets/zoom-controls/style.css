@@ -63,6 +63,11 @@
     line-height: 1;
 }
 
+.zoom-controls__button--position {
+    font-size: 16px;
+    line-height: 1;
+}
+
 .zoom-controls__indicator {
     text-align: center;
     font-size: 12px;
@@ -99,6 +104,10 @@
     
     .zoom-controls__button--reset {
         font-size: 16px;
+    }
+    
+    .zoom-controls__button--position {
+        font-size: 14px;
     }
     
     .zoom-controls__indicator {

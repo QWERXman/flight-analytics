@@ -9,6 +9,11 @@ const initialState: RegionsState = {
     selectedCode: null,
     hoveredCode: null,
     zoom: 1,
+    pan: {
+        x: 0,
+        y: 0,
+    },
+    isDragging: false,
 }
 
 const regionsSlice = createSlice({
@@ -42,6 +47,18 @@ const regionsSlice = createSlice({
         resetZoom(state) {
             state.zoom = 1
         },
+        startDragging(state) {
+            state.isDragging = true
+        },
+        stopDragging(state) {
+            state.isDragging = false
+        },
+        updatePan(state, action: PayloadAction<{ x: number; y: number }>) {
+            state.pan = action.payload
+        },
+        resetPan(state) {
+            state.pan = { x: 0, y: 0 }
+        },
     },
 })
 
@@ -54,6 +71,10 @@ export const {
     zoomIn,
     zoomOut,
     resetZoom,
+    startDragging,
+    stopDragging,
+    updatePan,
+    resetPan,
 } = regionsSlice.actions
 
 export const regionsSelector = (state: RootState) => state.regions.items
@@ -78,6 +99,8 @@ export const selectedRegionSelector = (state: RootState) => {
     return found ?? null
 }
 export const zoomSelector = (state: RootState) => state.regions.zoom
+export const panSelector = (state: RootState) => state.regions.pan
+export const isDraggingSelector = (state: RootState) => state.regions.isDragging
 
 export default regionsSlice.reducer
 

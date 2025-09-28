@@ -4,4 +4,4 @@ globs:
 alwaysApply: true
 ---
 
-Используй nextjs, feature-sliced-design, redux-toolkit, redux-saga, material-ui
+Используй nextjs, feature-sliced-design, redux-toolkit, redux-saga, material-ui. В компонентах всегда используй хуки(useMemo, useCallback и так далее) для оптимизации.

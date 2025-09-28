@@ -12,6 +12,11 @@ export type RegionsState = {
     selectedCode: string | null
     hoveredCode: string | null
     zoom: number
+    pan: {
+        x: number
+        y: number
+    }
+    isDragging: boolean
 }
 
 
