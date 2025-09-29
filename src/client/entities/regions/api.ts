@@ -1,6 +1,6 @@
-import { Region } from './types'
+import { RegionResponse } from './types'
 
-export async function fetchRegionsApi(): Promise<Region[]> {
+export async function fetchRegionsApi(): Promise<RegionResponse> {
     const response = await fetch('/api/regions', {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' },
@@ -12,7 +12,7 @@ export async function fetchRegionsApi(): Promise<Region[]> {
         throw new Error(text || 'Failed to fetch regions')
     }
 
-    const data = (await response.json()) as Region[]
+    const data = (await response.json()) as RegionResponse
     return data
 }
 

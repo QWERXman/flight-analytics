@@ -5,11 +5,11 @@ import {
     fetchRegionsRequested,
     fetchRegionsSucceeded,
 } from './slice'
-import type { Region } from './types'
+import type { Region, RegionResponse } from './types'
 
 function* handleFetchRegions() {
     try {
-        const regions: Region[] = yield call(fetchRegionsApi)
+        const regions: RegionResponse = yield call(fetchRegionsApi)
         yield put(fetchRegionsSucceeded(regions))
     } catch (error: unknown) {
         const message = error instanceof Error ? error.message : 'Unknown error'

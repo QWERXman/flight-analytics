@@ -4,7 +4,7 @@ import { writeFileSync, appendFileSync } from 'fs'
 import { join } from 'path'
 
 export async function GET() {
-    const a = await fetch(`${process.env.API_PATH}/api/map/regions`)
+    const a = await fetch(`${process.env.API_PATH}/api/flights/stats`)
     const resp = await a.json()
     // console.log(resp)
     // console.log((resp).length)
@@ -19,9 +19,16 @@ export async function GET() {
     //     return acc
     // }, {})
 
-     // Синхронная запись в файл
+    // const s = regions.reduce((acc, item) => {
+    //     acc[item.code] = item
+    //     return acc
+    // }, {})
+
+    // console.log(s)
+
+    //  Синхронная запись в файл
     //  const filePath = join(process.cwd(), 'src/app/api/regions', 'analytics.json')
-    //  writeFileSync(filePath, JSON.stringify(newReg, null, 2), 'utf8')
+    //  writeFileSync(filePath, JSON.stringify(s, null, 2), 'utf8')
      
     // console.log(resp)
     //  console.log(newReg.filter(item => !item.newCode).map(item => ({title: item.title, code: item.code})))

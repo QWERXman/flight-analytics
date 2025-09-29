@@ -1,9 +1,10 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { Region, RegionsState } from './types'
+import { Region, RegionResponse, RegionsState } from './types'
 import { RootState } from '@/lib/store'
 
 const initialState: RegionsState = {
     items: [],
+    totalFlight: 0,
     loading: false,
     error: null,
     selectedCode: null,
@@ -24,8 +25,9 @@ const regionsSlice = createSlice({
             state.loading = true
             state.error = null
         },
-        fetchRegionsSucceeded(state, action: PayloadAction<Region[]>) {
-            state.items = action.payload
+        fetchRegionsSucceeded(state, action: PayloadAction<RegionResponse>) {
+            state.items = action.payload.regions
+            state.totalFlight = action.payload.totalFlight
             state.loading = false
         },
         fetchRegionsFailed(state, action: PayloadAction<string>) {
