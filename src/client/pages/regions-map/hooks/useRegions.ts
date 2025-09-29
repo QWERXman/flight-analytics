@@ -7,5 +7,5 @@ export const useRegions = () => {
 
     useEffect(() => {
         dispatch(fetchRegionsRequested())
-    }, [dispatch])
+    }, [])
 }

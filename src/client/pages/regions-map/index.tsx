@@ -19,6 +19,7 @@ import {
     updatePan,
 } from '@/client/entities/regions/slice'
 import { RegionDetailsSidebar, ZoomControls } from '@/client/widgets'
+import { regionsPaths } from './const'
 
 export default () => {
     useRegions()
@@ -160,8 +161,8 @@ export default () => {
                     {regions?.map((item) => (
                         <path
                             key={item.code}
-                            d={item.path}
-                            data-title={item.title}
+                            d={regionsPaths[item.code]?.path}
+                            data-title={item.name}
                             data-code={item.code}
                             className={
                                 selectedRegion?.code === item.code

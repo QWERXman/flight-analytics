@@ -83,14 +83,14 @@ export const selectedRegionTitleSelector = (state: RootState) => {
     const code = state.regions.selectedCode
     if (!code) return null
     const found = state.regions.items.find((r) => r.code === code)
-    return found?.title ?? null
+    return found?.name ?? null
 }
 export const hoveredRegionCodeSelector = (state: RootState) => state.regions.hoveredCode
 export const hoveredRegionTitleSelector = (state: RootState) => {
     const code = state.regions.hoveredCode
     if (!code) return null
     const found = state.regions.items.find((r) => r.code === code)
-    return found?.title ?? null
+    return found?.name ?? null
 }
 export const selectedRegionSelector = (state: RootState) => {
     const code = state.regions.selectedCode

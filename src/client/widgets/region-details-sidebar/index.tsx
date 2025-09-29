@@ -61,7 +61,7 @@ export const RegionDetailsSidebar: React.FC<RegionDetailsSidebarProps> = ({
             <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
                 <Paper elevation={1} sx={{ p: 2 }}>
                     <Typography variant="h6" gutterBottom>
-                        {region.title}
+                        {region.name}
                     </Typography>
                     <Chip
                         label={`Код: ${region.code}`}

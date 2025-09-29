@@ -4,12 +4,15 @@ import { all, fork } from 'redux-saga/effects'
 
 import regionsReducer from '@/client/entities/regions/slice'
 import { regionsSaga } from '@/client/entities/regions/sagas'
+import analyticsReducer from '@/client/entities/analytics/slice'
+import { analyticsSaga } from '@/client/entities/analytics/sagas'
 
 const sagaMiddleware = createSagaMiddleware()
 
 export const store = configureStore({
     reducer: {
         regions: regionsReducer,
+        analytics: analyticsReducer,
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({ thunk: false, serializableCheck: false }).concat(
@@ -18,7 +21,7 @@ export const store = configureStore({
 })
 
 function* rootSaga() {
-    yield all([fork(regionsSaga)])
+    yield all([fork(regionsSaga), fork(analyticsSaga)])
 }
 
 sagaMiddleware.run(rootSaga)

@@ -1,6 +1,6 @@
 export type Region = {
     path: string
-    title: string
+    name: string
     count: number
     code: string
 }
