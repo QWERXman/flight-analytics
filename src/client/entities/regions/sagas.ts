@@ -1,15 +1,22 @@
-import { call, put, takeLatest } from 'redux-saga/effects'
-import { fetchRegionsApi } from './api'
+import { call, put, takeLatest, select } from 'redux-saga/effects'
+import { fetchRegionsApi, FetchRegionsParams } from './api'
 import {
     fetchRegionsFailed,
     fetchRegionsRequested,
     fetchRegionsSucceeded,
 } from './slice'
 import type { Region, RegionResponse } from './types'
+import { RootState } from '@/lib/store'
 
 function* handleFetchRegions() {
     try {
-        const regions: RegionResponse = yield call(fetchRegionsApi)
+        const state: RootState = yield select()
+        const params: FetchRegionsParams = {
+            dateFrom: state.regions.dateFrom,
+            dateTo: state.regions.dateTo,
+        }
+        
+        const regions: RegionResponse = yield call(fetchRegionsApi, params)
         yield put(fetchRegionsSucceeded(regions))
     } catch (error: unknown) {
         const message = error instanceof Error ? error.message : 'Unknown error'

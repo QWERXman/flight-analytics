@@ -1,7 +1,24 @@
 import { RegionResponse } from './types'
 
-export async function fetchRegionsApi(): Promise<RegionResponse> {
-    const response = await fetch('/api/regions', {
+export interface FetchRegionsParams {
+    dateFrom?: string | null
+    dateTo?: string | null
+}
+
+export async function fetchRegionsApi(params?: FetchRegionsParams): Promise<RegionResponse> {
+    const searchParams = new URLSearchParams()
+    
+    if (params?.dateFrom) {
+        searchParams.append('dateFrom', params.dateFrom)
+    }
+    
+    if (params?.dateTo) {
+        searchParams.append('dateTo', params.dateTo)
+    }
+    
+    const url = `/api/regions${searchParams.toString() ? `?${searchParams.toString()}` : ''}`
+    
+    const response = await fetch(url, {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' },
         cache: 'no-store',

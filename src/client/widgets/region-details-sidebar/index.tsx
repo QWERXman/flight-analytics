@@ -77,7 +77,7 @@ export const RegionDetailsSidebar: React.FC<RegionDetailsSidebarProps> = ({
                     </Typography>
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                         <Typography variant="h4" color="primary">
-                            {region.count}
+                            {region.flight_count}
                         </Typography>
                         <Typography variant="body2" color="text.secondary">
                             рейсов

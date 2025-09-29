@@ -15,6 +15,8 @@ const initialState: RegionsState = {
         y: 0,
     },
     isDragging: false,
+    dateFrom: null,
+    dateTo: null,
 }
 
 const regionsSlice = createSlice({
@@ -27,7 +29,7 @@ const regionsSlice = createSlice({
         },
         fetchRegionsSucceeded(state, action: PayloadAction<RegionResponse>) {
             state.items = action.payload.regions
-            state.totalFlight = action.payload.totalFlight
+            state.totalFlight = action.payload.total_flights
             state.loading = false
         },
         fetchRegionsFailed(state, action: PayloadAction<string>) {
@@ -61,6 +63,16 @@ const regionsSlice = createSlice({
         resetPan(state) {
             state.pan = { x: 0, y: 0 }
         },
+        setDateFrom(state, action: PayloadAction<string | null>) {
+            state.dateFrom = action.payload
+        },
+        setDateTo(state, action: PayloadAction<string | null>) {
+            state.dateTo = action.payload
+        },
+        resetDateFilters(state) {
+            state.dateFrom = null
+            state.dateTo = null
+        },
     },
 })
 
@@ -77,9 +89,14 @@ export const {
     stopDragging,
     updatePan,
     resetPan,
+    setDateFrom,
+    setDateTo,
+    resetDateFilters,
 } = regionsSlice.actions
 
 export const regionsSelector = (state: RootState) => state.regions.items
+export const regionsLoadingSelector = (state: RootState) => state.regions.loading
+export const totalFlightSelector = (state: RootState) => state.regions.totalFlight
 export const selectedRegionCodeSelector = (state: RootState) => state.regions.selectedCode
 export const selectedRegionTitleSelector = (state: RootState) => {
     const code = state.regions.selectedCode
@@ -103,6 +120,8 @@ export const selectedRegionSelector = (state: RootState) => {
 export const zoomSelector = (state: RootState) => state.regions.zoom
 export const panSelector = (state: RootState) => state.regions.pan
 export const isDraggingSelector = (state: RootState) => state.regions.isDragging
+export const dateFromSelector = (state: RootState) => state.regions.dateFrom
+export const dateToSelector = (state: RootState) => state.regions.dateTo
 
 export default regionsSlice.reducer
 

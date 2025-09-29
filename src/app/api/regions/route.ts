@@ -3,8 +3,30 @@ import {regions} from './const'
 import { writeFileSync, appendFileSync } from 'fs'
 import { join } from 'path'
 
-export async function GET() {
-    const a = await fetch(`${process.env.API_PATH}/api/flights/stats`)
+export async function GET(request: Request) {
+    const { searchParams } = new URL(request.url)
+    const dateFrom = searchParams.get('dateFrom')
+    const dateTo = searchParams.get('dateTo')
+    
+    // Формируем URL с параметрами дат
+    let apiUrl = `${process.env.API_PATH}/api/flights/stats`
+    const apiParams = new URLSearchParams()
+    
+    if (dateFrom) {
+        apiParams.append('date_from', dateFrom)
+    }
+    
+    if (dateTo) {
+        apiParams.append('date_to', dateTo)
+    }
+    
+    if (apiParams.toString()) {
+        apiUrl += `?${apiParams.toString()}`
+    }
+    
+    console.log(apiUrl)
+
+    const a = await fetch(apiUrl)
     const resp = await a.json()
     // console.log(resp)
     // console.log((resp).length)
