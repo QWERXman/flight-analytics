@@ -1,0 +1,9 @@
+version: '0.1'
+services:
+    flight-analytics:
+        image: flight-analytics
+        ports:
+            - '80:80'
+        build:
+            context: ./
+            dockerfile: Dockerfile
