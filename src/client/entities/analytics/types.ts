@@ -25,6 +25,10 @@ export type AnalyticsData = {
     flightsPerMonth: FlightsPerMonthData
     averageDuration: AverageDurationData
     topRegions: TopRegionData[]
+    averageDurationMonthly: Array<{ month: string; duration: number }>
+    monthlyGrowth: Array<{ month: string; growth: number }>
+    dailyActivity: Array<{ hour: string; flights: number }>
+    peakLoad: { hour: string; flights: number }
 }
 
 export type AnalyticsFilters = {

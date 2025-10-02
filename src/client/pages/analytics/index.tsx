@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from 'react-redux'
 import {
     Container,
     Typography,
-    Grid,
     Box,
     CircularProgress,
     Alert,
@@ -74,52 +73,119 @@ export default function Analytics() {
             <AnalyticsFilters />
 
             {/* KPI Cards */}
-            <Grid container spacing={3} sx={{ mb: 3 }}>
-                <Grid item xs={12} md={6}>
+            <Box
+                sx={{
+                    display: 'grid',
+                    gridTemplateColumns: { xs: '1fr', md: '1fr 1fr' },
+                    gap: 3,
+                    mb: 3,
+                }}
+            >
+                <Box>
                     <KPICard
                         title="Общее количество полетов"
                         value={data.flightsPerMonth.total.toLocaleString()}
                         subtitle="за период"
                         color="primary"
                     />
-                </Grid>
-                <Grid item xs={12} md={6}>
+                </Box>
+                <Box>
                     <KPICard
                         title="Средняя длительность полета"
                         value={`${data.averageDuration.total} ч`}
                         subtitle="по всем регионам"
                         color="secondary"
                     />
-                </Grid>
-            </Grid>
+                </Box>
+                <Box>
+                    <KPICard
+                        title="Пиковая нагрузка"
+                        value={`${data.peakLoad.flights} полетов`}
+                        subtitle={`в час ${data.peakLoad.hour}`}
+                        color="warning"
+                    />
+                </Box>
+            </Box>
 
             {/* Charts */}
-            <Grid container spacing={3}>
-                {/* Line Chart - Flights per Month */}
-                <Grid item xs={12} lg={6}>
+            {/* Row 1 */}
+            <Box
+                sx={{
+                    display: 'grid',
+                    gridTemplateColumns: { xs: '1fr', lg: '1fr 1fr' },
+                    gap: 3,
+                    mb: 3,
+                }}
+            >
+                <Box>
                     <LineChartComponent
                         title="Количество полетов по месяцам"
                         data={data.flightsPerMonth.chart}
+                        xKey="month"
+                        yKey="flights"
+                        yLabel="Полеты"
                     />
-                </Grid>
+                </Box>
 
                 {/* Donut Chart - Average Duration by Region */}
-                <Grid item xs={12} lg={6}>
+                <Box>
                     <DonutChartComponent
                         title="Средняя длительность по регионам"
                         data={data.averageDuration.byRegion}
                     />
-                </Grid>
+                </Box>
+            </Box>
 
-                {/* Bar Chart - Top Regions */}
-                <Grid item xs={12}>
-                    <BarChartComponent
-                        title="Топ-10 регионов по количеству полетов"
-                        data={data.topRegions}
-                        height={500}
+            {/* Bar Chart - Top Regions */}
+            <Box sx={{ mb: 3 }}>
+                <BarChartComponent
+                    title="Топ-10 регионов по количеству полетов"
+                    data={data.topRegions}
+                    height={500}
+                />
+            </Box>
+
+            {/* Row 2 */}
+            <Box
+                sx={{
+                    display: 'grid',
+                    gridTemplateColumns: { xs: '1fr', lg: '1fr 1fr' },
+                    gap: 3,
+                    mb: 3,
+                }}
+            >
+                <Box>
+                    <LineChartComponent
+                        title="Средняя длительность по месяцам"
+                        data={data.averageDurationMonthly}
+                        xKey="month"
+                        yKey="duration"
+                        yLabel="Длительность (ч)"
                     />
-                </Grid>
-            </Grid>
+                </Box>
+
+                {/* Line Chart - Monthly Growth */}
+                <Box>
+                    <LineChartComponent
+                        title="Рост/падение числа полетов по месяцам"
+                        data={data.monthlyGrowth}
+                        xKey="month"
+                        yKey="growth"
+                        yLabel="Рост (%)"
+                    />
+                </Box>
+            </Box>
+
+            {/* Line Chart - Daily Activity by Hour */}
+            <Box>
+                <LineChartComponent
+                    title="Дневная активность по часам"
+                    data={data.dailyActivity}
+                    xKey="hour"
+                    yKey="flights"
+                    yLabel="Полеты"
+                />
+            </Box>
         </Container>
     )
 }

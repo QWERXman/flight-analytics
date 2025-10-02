@@ -4,61 +4,85 @@ export async function GET(request: Request) {
     const dateFrom = searchParams.get('dateFrom')
     const dateTo = searchParams.get('dateTo')
 
-    // Моковые данные для демонстрации
-    const mockData = {
-        flightsPerMonth: {
-            total: 1247,
-            chart: [
-                { month: '2024-01', flights: 98 },
-                { month: '2024-02', flights: 112 },
-                { month: '2024-03', flights: 134 },
-                { month: '2024-04', flights: 156 },
-                { month: '2024-05', flights: 189 },
-                { month: '2024-06', flights: 203 },
-                { month: '2024-07', flights: 187 },
-                { month: '2024-08', flights: 168 }
-            ]
-        },
-        averageDuration: {
-            total: 4.2,
-            byRegion: [
-                { region: 'Москва', duration: 3.8, flights: 234 },
-                { region: 'Санкт-Петербург', duration: 4.1, flights: 189 },
-                { region: 'Новосибирск', duration: 4.5, flights: 156 },
-                { region: 'Екатеринбург', duration: 4.3, flights: 134 },
-                { region: 'Казань', duration: 3.9, flights: 112 },
-                { region: 'Нижний Новгород', duration: 4.0, flights: 98 },
-                { region: 'Челябинск', duration: 4.4, flights: 87 },
-                { region: 'Омск', duration: 4.6, flights: 76 },
-                { region: 'Самара', duration: 4.2, flights: 65 },
-                { region: 'Ростов-на-Дону', duration: 3.7, flights: 54 }
-            ]
-        },
-        topRegions: [
-            { region: 'Москва', flights: 234, percentage: 18.8 },
-            { region: 'Санкт-Петербург', flights: 189, percentage: 15.2 },
-            { region: 'Новосибирск', flights: 156, percentage: 12.5 },
-            { region: 'Екатеринбург', flights: 134, percentage: 10.7 },
-            { region: 'Казань', flights: 112, percentage: 9.0 },
-            { region: 'Нижний Новгород', flights: 98, percentage: 7.9 },
-            { region: 'Челябинск', flights: 87, percentage: 7.0 },
-            { region: 'Омск', flights: 76, percentage: 6.1 },
-            { region: 'Самара', flights: 65, percentage: 5.2 },
-            { region: 'Ростов-на-Дону', flights: 54, percentage: 4.3 }
-        ]
+    const params = new URLSearchParams()
+    if (regions.length > 0) params.set('regions', regions.join(','))
+    if (dateFrom) params.set('dateFrom', dateFrom)
+    if (dateTo) params.set('dateTo', dateTo)
+
+    const base = process.env.API_PATH
+
+    const endpoints = {
+        monthlyFlights: `${base}/api/metrics/monthly-flights?${params.toString()}`,
+        avgDurationMonthly: `${base}/api/metrics/avg-duration-monthly?${params.toString()}`,
+        avgDurationRegions: `${base}/api/metrics/avg-duration-regions?${params.toString()}`,
+        topRegions: `${base}/api/metrics/top-regions?${params.toString()}`,
+        peakLoad: `${base}/api/metrics/peak-load?${params.toString()}`,
+        monthlyGrowth: `${base}/api/metrics/monthly-growth?${params.toString()}`,
+        dailyActivity: `${base}/api/metrics/daily-activity?${params.toString()}`,
     }
 
-    // Здесь можно добавить фильтрацию по регионам и датам
-    let filteredData = { ...mockData }
 
-    if (regions.length > 0) {
-        filteredData.averageDuration.byRegion = filteredData.averageDuration.byRegion.filter(
-            item => regions.includes(item.region)
-        )
-        filteredData.topRegions = filteredData.topRegions.filter(
-            item => regions.includes(item.region)
+    console.log(endpoints)
+
+    try {
+        const [monthlyFlightsRes, avgDurMonthlyRes, avgDurRegionsRes, topRegionsRes, peakLoadRes, monthlyGrowthRes, dailyActivityRes] = await Promise.all([
+            fetch(endpoints.monthlyFlights, { cache: 'no-store' }),
+            fetch(endpoints.avgDurationMonthly, { cache: 'no-store' }),
+            fetch(endpoints.avgDurationRegions, { cache: 'no-store' }),
+            fetch(endpoints.topRegions, { cache: 'no-store' }),
+            fetch(endpoints.peakLoad, { cache: 'no-store' }),
+            fetch(endpoints.monthlyGrowth, { cache: 'no-store' }),
+            fetch(endpoints.dailyActivity, { cache: 'no-store' }),
+        ])
+
+        // if (!monthlyFlightsRes.ok) throw new Error('get_monthly_flights failed')
+        // if (!avgDurMonthlyRes.ok) throw new Error('get_avg_duration_monthly failed')
+        // if (!avgDurRegionsRes.ok) throw new Error('get_avg_duration_regions failed')
+        // if (!topRegionsRes.ok) throw new Error('get_top_regions failed')
+        // if (!peakLoadRes.ok) throw new Error('get_peak_load failed')
+        // if (!monthlyGrowthRes.ok) throw new Error('get_monthly_growth failed')
+        // if (!dailyActivityRes.ok) throw new Error('get_daily_activity failed')
+
+        const [monthlyFlights, avgDurMonthly, avgDurRegions, topRegions, peakLoad, monthlyGrowth, dailyActivity] = await Promise.all([
+            monthlyFlightsRes.json(),
+            avgDurMonthlyRes.json(),
+            avgDurRegionsRes.json(),
+            topRegionsRes.json(),
+            peakLoadRes.json(),
+            monthlyGrowthRes.json(),
+            dailyActivityRes.json(),
+        ])
+
+        // Expecting shapes:
+        // monthlyFlights: Array<{ month: string; flights: number }>
+        // avgDurMonthly: Array<{ month: string; duration: number }>
+        // avgDurRegions: Array<{ region: string; duration: number; flights: number }>
+        // topRegions: Array<{ region: string; flights: number; percentage?: number }>
+        // peakLoad: { hour: string; flights: number }
+        // monthlyGrowth: Array<{ month: string; growth: number }>
+        // dailyActivity: Array<{ hour: string; flights: number }>
+
+        const totalFlights = Array.isArray(monthlyFlights)
+            ? monthlyFlights.reduce((acc: number, it: any) => acc + (Number(it.flights) || 0), 0)
+            : 0
+
+        const weightedAvgDuration = Array.isArray(avgDurRegions) && avgDurRegions.length > 0
+            ? (avgDurRegions.reduce((acc: number, it: any) => acc + (Number(it.duration) || 0) * (Number(it.flights) || 0), 0) /
+               avgDurRegions.reduce((acc: number, it: any) => acc + (Number(it.flights) || 0), 0))
+            : (Array.isArray(avgDurMonthly) && avgDurMonthly.length > 0
+                ? avgDurMonthly.reduce((acc: number, it: any) => acc + (Number(it.duration) || 0), 0) / avgDurMonthly.length
+                : 0)
+
+        const responseBody = {
+            monthlyFlights, avgDurMonthly, avgDurRegions, topRegions, peakLoad, monthlyGrowth, dailyActivity
+        }
+
+        return Response.json(responseBody)
+    } catch (error) {
+        console.log(error)
+        return new Response(
+            JSON.stringify({ message: error instanceof Error ? error.message : 'Failed to load analytics' }),
+            { status: 500, headers: { 'Content-Type': 'application/json' } }
         )
     }
-
-    return Response.json(filteredData)
 }
